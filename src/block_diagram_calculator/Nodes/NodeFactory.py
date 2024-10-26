@@ -23,15 +23,15 @@ class NodeFactory:
             newNodeId = self._nodeCount + 1
             nodeType = config["type"]
             if nodeType == NodeBlock.typeString:
-                newNode = NodeBlock(nodeId)
+                newNode = NodeBlock(nodeId, **config)
             elif nodeType == NodeInput.typeString:
-                newNode = NodeInput(nodeId)
+                newNode = NodeInput(nodeId, **config)
             elif nodeType == NodeOutput.typeString:
-                newNode = NodeOutput(nodeId)
+                newNode = NodeOutput(nodeId, **config)
             elif nodeType == NodeSplit.typeString:
-                newNode = NodeSplit(nodeId)
+                newNode = NodeSplit(nodeId, **config)
             elif nodeType == NodeSum.typeString:
-                newNode = NodeSum(nodeId)
+                newNode = NodeSum(nodeId, **config)
             else:
                 raise Exception(f"Unknown node type: {nodeType}")
         except Exception as e:

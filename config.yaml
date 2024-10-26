@@ -6,6 +6,7 @@ nodes:
     type: input
   Node_amp:
     type: block
+    equation: 5*s
   Node_sum:
     type: sum
   Node_O1:

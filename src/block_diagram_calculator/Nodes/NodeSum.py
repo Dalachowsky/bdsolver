@@ -7,5 +7,5 @@ class NodeSum(NodeBase):
     maxOutputNodes = 1
     typeString = "sum"
 
-    def __init__(self, nodeId: int):
+    def __init__(self, nodeId: int, **kwargs):
         super().__init__(nodeId)
