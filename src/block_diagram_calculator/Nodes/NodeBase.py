@@ -23,11 +23,23 @@ class NodeBase(INode):
     def logId(self):
         return f"{self.stringId}:"
 
+    def getInputConnArgs(self, nodeId: str):
+        try:
+            return self._inputNodesConnArgs[nodeId]
+        except Exception:
+            return []
+
+    def getOutputConnArgs(self, nodeId: str):
+        try:
+            return self._outputNodesConnArgs[nodeId]
+        except Exception:
+            return []
+
     def disconnect(self):
         for node in self._inputNodes:
-            node.removeInputNode(self)
-        for node in self._outputNodes:
             node.removeOutputNode(self)
+        for node in self._outputNodes:
+            node.removeInputNode(self)
         self._inputNodes = []
         self._outputNodes = []
 
@@ -45,7 +57,7 @@ class NodeBase(INode):
         self.removeOutputNode(nodeOld)
         nodeOld.removeInputNode(self)
         self.addOutputNode(nodeNew, *self._outputNodesConnArgs[nodeOld.stringId])
-        nodeNew.addInputNode(self)
+        nodeNew.addInputNode(self, *nodeNew.getInputConnArgs(nodeOld.stringId))
 
     def getInputNodes(self):
         return self._inputNodes
