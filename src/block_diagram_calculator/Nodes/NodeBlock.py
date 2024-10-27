@@ -11,6 +11,9 @@ class NodeBlock(NodeBase):
         except Exception as e:
             raise Exception(f"Field \"equation\" not found in block node {self.stringId}")
 
+    def getEquation(self):
+        return self._equation
+
     def __repr__(self):
         ret = super().__repr__()
         ret += f"- Equation: {self._equation}\n"

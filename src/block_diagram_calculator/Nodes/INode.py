@@ -7,6 +7,14 @@ class INode(ABC):
     stringId = ""
 
     @abstractmethod
+    def reconnectInputNode(self, nodeOld: "INode", nodeNew: "INode"):
+        pass
+
+    @abstractmethod
+    def reconnectOutputNode(self, nodeOld: "INode", nodeNew: "INode"):
+        pass
+
+    @abstractmethod
     def getInputNodes(self):
         pass
 
@@ -15,16 +23,24 @@ class INode(ABC):
         pass
 
     @abstractmethod
-    def setInputNode(self, node: "INode"):
+    def setInputNode(self, node: "INode", **kwargs):
         pass
 
-    def addInputNode(self, node: "INode"):
-        pass
-
-    @abstractmethod
-    def setOutputNode(self, node: "INode"):
+    def addInputNode(self, node: "INode", **kwargs):
         pass
 
     @abstractmethod
-    def addOutputNode(self, node: "INode"):
+    def removeInputNode(self, node: "INode"):
+        pass
+
+    @abstractmethod
+    def setOutputNode(self, node: "INode", **kwargs):
+        pass
+
+    @abstractmethod
+    def addOutputNode(self, node: "INode", **kwargs):
+        pass
+
+    @abstractmethod
+    def removeOutputNode(self, node: "INode"):
         pass

@@ -10,14 +10,29 @@ LOG = logging.getLogger(__name__)
 class BlockDiagram:
 
     def __init__(self):
+        self._name = "Diagram"
         self._nodes: Dict[str, INode] = {}
         self._nodeFactory = NodeFactory()
+
+    @property
+    def logId(self):
+        return f"[{self._name}]"
 
     def getNodes(self) -> List[INode]:
         return self._nodes.values()
 
     def getNodeById(self, id: str):
         return self._nodes[id]
+
+    def addNode(self, node: INode):
+        self._nodes[node.stringId] = node
+
+    def removeOrphans(self):
+        isOrphan = lambda  node: (len(node.getInputNodes()) == 0 and len(node.getOutputNodes()) == 0)
+        lenBefore = len(self._nodes)
+        self._nodes = {id: n for id, n in self._nodes.items() if not isOrphan(n)}
+        lenAfter = len(self._nodes)
+        LOG.info(f"{self.logId} Removed {lenBefore - lenAfter} orphans")
 
     def parseConnection(self, connectionStr: str):
         parts = connectionStr.split(' ')
@@ -35,10 +50,10 @@ class BlockDiagram:
         srcNode = self.getNodeById(node_src_label)
         dstNode = self.getNodeById(node_dst_label)
 
-        LOG.debug(f"{srcNode.stringId}: adding output node {dstNode.stringId}")
-        srcNode.addOutputNode(dstNode)
-        LOG.debug(f"{dstNode.stringId}: adding input node {srcNode.stringId}")
-        dstNode.addInputNode(srcNode)
+        LOG.debug(f"{srcNode.stringId}: adding output node {dstNode.stringId} | args: {node_src_args}")
+        srcNode.addOutputNode(dstNode, *node_src_args)
+        LOG.debug(f"{dstNode.stringId}: adding input node {srcNode.stringId} | args: {node_dst_args}")
+        dstNode.addInputNode(srcNode, *node_dst_args)
 
         LOG.debug(f"Added connection {srcNode.stringId} -> {dstNode.stringId}")
 

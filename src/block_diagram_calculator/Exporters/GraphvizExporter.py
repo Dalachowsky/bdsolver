@@ -33,12 +33,18 @@ class GraphvizExporter:
             #xlabel=nodeLabel,  
             shape=nodeShape)
 
+
         for outputNode in node.getOutputNodes():
             LOG.debug(f"Drawing connection {node.stringId} -> {outputNode.stringId}")
+            edgeLabel = ""
+            if isinstance(outputNode, NodeSum):
+                outputNode: NodeSum
+                edgeLabel += outputNode.getInputSign(node)
             diagram.edge(
                 node.stringId, 
                 outputNode.stringId,
-                #headport="w"
+                #headport="w",
+                label=edgeLabel
             )
 
     def export(self, path: str):
