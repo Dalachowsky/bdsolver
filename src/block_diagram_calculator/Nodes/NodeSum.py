@@ -25,6 +25,10 @@ class NodeSum(NodeBase):
         except IndexError:
             raise Exception(f"Sign not provided for node {self.stringId} input")
 
+    def reconnectInputNode(self, nodeOld: INode, nodeNew: INode):
+        super().reconnectInputNode(nodeOld, nodeNew)
+        self._input_signs[nodeNew.stringId] = self._input_signs[nodeOld.stringId]
+
     def setInputNode(self, node: INode, *args):
         super().setInputNode(node, *args)
         self._parseConnectionArgs(node, *args)

@@ -16,7 +16,7 @@ nodes:
     type: proportional
     k: 5
   Node_join_amp:
-    type: split
+    type: sum
   Node_sum:
     type: sum
   O1:
@@ -30,10 +30,10 @@ connections:
   - I1 - Node_sum/+
   - I2 - Node_split_amp
   - Node_split_amp - Node_amp_p
-  - Node_amp_p - Node_join_amp
+  - Node_amp_p - Node_join_amp/-
   - Node_split_amp - Node_amp_1
   - Node_amp_1 - Node_amp_2
-  - Node_amp_2 - Node_join_amp
+  - Node_amp_2 - Node_join_amp/+
   - Node_join_amp - Node_sum/-
   - Node_sum - Node_split
   - Node_split - O1

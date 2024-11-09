@@ -13,8 +13,8 @@ class OptBlockParallel(IOpt):
     def _findParallelBlocks(start: NodeSplit):
         # Find all connected block nodes
         blockNodes: List[NodeBlock] = [n for n in start.getOutputNodes() if isinstance(n, NodeBlock)]
-        # Filter out all block nodes that are not connected to another split node
-        blockNodes = [b for b in blockNodes if isinstance(b.getOutputNodes()[0], NodeSplit) ]
+        # Filter out all block nodes that are not connected to summing node
+        blockNodes = [b for b in blockNodes if isinstance(b.getOutputNodes()[0], NodeSum) ]
         for b1 in blockNodes:
             for b2 in blockNodes:
                 if b2 == b1:
@@ -33,21 +33,26 @@ class OptBlockParallel(IOpt):
             b1 = blockPair[0]
             b2 = blockPair[1]
             endNode = b1.getOutputNodes()[0]
+            endNode: NodeSum
+            newEndNode = endNode.getOutputNodes()[0]
 
             # Merge nodes
             LOG.info(f"Merging blocks in parallel: {b1.stringId} + {b2.stringId}")
             newId = f"{b1.stringId}_{b2.stringId}"
-            newEquation = f"({b1.getEquation()}) + ({b2.getEquation()})"
+            b1_sign = endNode.getInputSign(b1)
+            b2_sign = endNode.getInputSign(b2)
+            newEquation = f"{b1_sign} ({b1.getEquation()}) {b2_sign} ({b2.getEquation()})"
             mergedNode = NodeBlock(newId, equation=newEquation)
 
             # Reconnect nodes
-            b1.disconnect()
-            b2.disconnect()
             node.addOutputNode(mergedNode)
             mergedNode.addInputNode(node)
-            endNode.addInputNode(mergedNode)
-            mergedNode.addOutputNode(endNode)
+            newEndNode.reconnectInputNode(endNode, mergedNode)
+            #mergedNode.addOutputNode(newEndNode)
             diagram.addNode(mergedNode)
+            b1.disconnect()
+            b2.disconnect()
+            endNode.disconnect()
             return True
         else:
             return False

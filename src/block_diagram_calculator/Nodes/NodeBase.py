@@ -45,7 +45,7 @@ class NodeBase(INode):
 
     def reconnectInputNode(self, nodeOld: INode, nodeNew: INode):
         if nodeOld not in self._inputNodes:
-            return
+            raise Exception(f"Node {nodeOld.stringId} not found in {self.stringId}'s input nodes")
         self.removeInputNode(nodeOld)
         nodeOld.removeOutputNode(self)
         self.addInputNode(nodeNew, *self._inputNodesConnArgs[nodeOld.stringId])
