@@ -1,25 +1,40 @@
 
 nodes:
-  Node_I1:
+  I1:
     type: input
-  Node_I2:
+  I2:
     type: input
-  Node_amp:
+  Node_split_amp:
+    type: split
+  Node_amp_1:
     type: block
     equation: 5*s
+  Node_amp_2:
+    type: block
+    equation: s**2
+  Node_amp_p:
+    type: block
+    equation: s
+  Node_join_amp:
+    type: split
   Node_sum:
     type: sum
-  Node_O1:
+  O1:
     type: output
   Node_split:
     type: split
-  Node_O2:
+  O2:
     type: output
 
 connections:
-  - Node_I1 - Node_sum/0/+
-  - Node_I2 - Node_amp
-  - Node_amp - Node_sum/1/-
+  - I1 - Node_sum/+
+  - I2 - Node_split_amp
+  - Node_split_amp - Node_amp_p
+  - Node_amp_p - Node_join_amp
+  - Node_split_amp - Node_amp_1
+  - Node_amp_1 - Node_amp_2
+  - Node_amp_2 - Node_join_amp
+  - Node_join_amp - Node_sum/-
   - Node_sum - Node_split
-  - Node_split/0 - Node_O1
-  - Node_split/1 - Node_O2
+  - Node_split - O1
+  - Node_split - O2

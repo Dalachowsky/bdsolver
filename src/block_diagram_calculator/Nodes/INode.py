@@ -44,3 +44,7 @@ class INode(ABC):
     @abstractmethod
     def removeOutputNode(self, node: "INode"):
         pass
+
+    @abstractmethod
+    def toDict(self) -> dict:
+        pass

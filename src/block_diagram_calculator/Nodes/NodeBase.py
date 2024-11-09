@@ -91,6 +91,12 @@ class NodeBase(INode):
     def removeOutputNode(self, node: INode):
         self._outputNodes = [n for n in self._outputNodes if n != node]
 
+    def toDict(self) -> dict:
+        ret = {
+            "type": self.typeString,
+        }
+        return ret
+
     def __repr__(self):
         ret = f"{self.stringId}:\n"
         ret += "- Inputs:\n"

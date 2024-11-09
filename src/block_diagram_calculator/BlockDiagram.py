@@ -18,6 +18,10 @@ class BlockDiagram:
     def logId(self):
         return f"[{self._name}]"
 
+    @property
+    def nodeCount(self):
+        return len(self._nodes)
+
     def getNodes(self) -> List[INode]:
         return self._nodes.values()
 
@@ -75,6 +79,17 @@ class BlockDiagram:
 
         for connection in connectionsConfig:
             self.parseConnection(connection)
+
+    def serializeYaml(self):
+        config = {}
+        config["nodes"] = {}
+        for node in self._nodes.values():
+            config["nodes"][node.stringId] = node.toDict()
+        config["connections"] = []
+        for node in self._nodes.values():
+            for output in node.getOutputNodes():
+                config["connections"].append(f"{node.stringId} - {output.stringId}")
+        return yaml.dump(config)
 
     def fromJson(self, jsonString: str):
         config = json.loads(jsonString)
