@@ -28,6 +28,8 @@ class NodeFactory:
                 newNode = NodeInput(nodeId, **config)
             elif nodeType == NodeOutput.typeString:
                 newNode = NodeOutput(nodeId, **config)
+            elif nodeType == NodeProportional.typeString:
+                newNode = NodeProportional(nodeId, **config)
             elif nodeType == NodeSplit.typeString:
                 newNode = NodeSplit(nodeId, **config)
             elif nodeType == NodeSum.typeString:

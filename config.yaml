@@ -13,8 +13,8 @@ nodes:
     type: block
     equation: s**2
   Node_amp_p:
-    type: block
-    equation: s
+    type: proportional
+    k: 5
   Node_join_amp:
     type: split
   Node_sum:

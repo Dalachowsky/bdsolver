@@ -16,7 +16,7 @@ class GraphvizExporter:
         nodeShape = "rectangle"
         attrs = {}
 
-        if node.typeString == NodeBlock.typeString:
+        if isinstance(node, NodeBlock):
             nodeLabel = str(node.getEquation())
         elif node.typeString == NodeInput.typeString:
             nodeShape = "none"
