@@ -1,0 +1,9 @@
+
+nodes:
+  I1:
+    type: input
+  O1:
+    type: output
+
+connections:
+  - I1 - O1

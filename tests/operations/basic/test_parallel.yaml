@@ -1,0 +1,24 @@
+
+nodes:
+  I1:
+    type: input
+  O1:
+    type: output
+  split:
+    type: split
+  A1:
+    type: block
+    equation: s**2
+  A2:
+    type: block
+    equation: s
+  S:
+    type: sum
+
+connections:
+  - I1 - split
+  - split - A1
+  - split - A2
+  - A1 - S/+
+  - A2 - S/-
+  - S - O1

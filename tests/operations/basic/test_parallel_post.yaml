@@ -1,0 +1,13 @@
+
+nodes:
+  I1:
+    type: input
+  O1:
+    type: output
+  A1_A2:
+    type: block
+    equation: s**2 - s
+
+connections:
+  - I1 - A1_A2
+  - A1_A2 - O1

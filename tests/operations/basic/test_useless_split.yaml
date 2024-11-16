@@ -1,0 +1,12 @@
+
+nodes:
+  I1:
+    type: input
+  O1:
+    type: output
+  split:
+    type: split
+
+connections:
+  - I1 - split
+  - split - O1

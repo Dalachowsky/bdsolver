@@ -1,0 +1,17 @@
+
+nodes:
+  I1:
+    type: input
+  Node_amp_1:
+    type: block
+    equation: 5*s
+  Node_amp_2:
+    type: block
+    equation: s
+  O1:
+    type: output
+
+connections:
+  - I1 - Node_amp_1
+  - Node_amp_1 - Node_amp_2
+  - Node_amp_2 - O1
