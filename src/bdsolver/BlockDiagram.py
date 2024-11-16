@@ -100,3 +100,15 @@ class BlockDiagram:
 
         for node in nodesConfig:
             self._nodes.append(self._nodeFactory.fromJson(node))
+
+    def __eq__(self, o):
+        if isinstance(o, BlockDiagram):
+            o: BlockDiagram
+            if o.nodeCount != self.nodeCount:
+                return False
+            for node in self.getNodes():
+                if not node.compareNode(o.getNodeById(node.stringId)):
+                    return False
+        else:
+            raise Exception(f"Cannot compare BlockDiagram to {o.__class__}")
+        return True

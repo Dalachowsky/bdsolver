@@ -26,3 +26,12 @@ class NodeBlock(NodeBase):
         ret = super().__repr__()
         ret += f"- Equation: {self._equation}\n"
         return ret
+
+    def compareNode(self, other: NodeBase):
+        if super().compareNode(other):
+            if isinstance(other, NodeBlock):
+                other: NodeBlock
+                if other._equation != self._equation:
+                    return False
+            return True
+        return False

@@ -107,3 +107,9 @@ class NodeBase(INode):
             ret += f"  - {node.stringId}\n"
         return ret
 
+    def compareNode(self, other: "NodeBase"):
+        if not all([n.stringId in [_n.stringId for _n in self.getInputNodes()] for n in other.getInputNodes()]):
+            return False
+        if not all([n.stringId in [_n.stringId for _n in self.getOutputNodes()] for n in other.getOutputNodes()]):
+            return False
+        return True

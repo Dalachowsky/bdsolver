@@ -48,3 +48,7 @@ class INode(ABC):
     @abstractmethod
     def toDict(self) -> dict:
         pass
+
+    @abstractmethod
+    def compareNode(self, other: "INode") -> bool:
+        pass
