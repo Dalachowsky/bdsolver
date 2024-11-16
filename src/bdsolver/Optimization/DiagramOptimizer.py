@@ -126,8 +126,19 @@ class DiagramOptimizer:
                 step.addChildStep(s)
                 self._addStep(s)
 
-    def optimize(self, diagram: BlockDiagram, maxDepth = 10):
-        self._steps = [OptimizeStepRoot(diagram)]
+    def getBestDiagram(self):
+        bestStep = None
+        for step in self._steps:
+            if bestStep == None:
+                bestStep = step
+            if step.nodeCount < bestStep.nodeCount:
+                bestStep = step
+        return bestStep.diagram
+
+    def optimize(self, diagramSrc: BlockDiagram, maxDepth = 10):
+        diagram = deepcopy(diagramSrc)
+        rootStep = OptimizeStepRoot(diagram)
+        self._steps = [rootStep]
         e = GraphvizExporter(diagram)
         with open(f"{self.tmpDir}/root.yaml", 'w') as f:
             f.write(diagram.serializeYaml())
@@ -136,6 +147,8 @@ class DiagramOptimizer:
         for i in range(0, maxDepth):
             self._optimizeIteration()
             LOG.debug(f"Optimize iteration {i} finished")
+
+        return self.getBestDiagram()
 
     def optimizeStep(self, diagram: BlockDiagram):
         for opt in self._optimizationsCertain:
