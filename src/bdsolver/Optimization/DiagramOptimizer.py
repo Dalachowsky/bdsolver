@@ -90,6 +90,7 @@ class DiagramOptimizer:
     def __init__(self, **kwargs):
         self.tmpDir = kwargs.get("tmpDir", "./optimization")
         self._steps = []
+        self._exportDiagrams = False
         Path(self.tmpDir).mkdir(exist_ok=True)
 
     def _addStep(self, step: OptimizeStep):
@@ -104,9 +105,10 @@ class DiagramOptimizer:
                 if newStep.evaluated:
                     newStep.diagram.removeOrphans()
                     newSteps.append(newStep)
-                    e = GraphvizExporter(newStep.diagram)
-                    newStep.serialize(f"{self.tmpDir}/config_{newStep.id}.yaml")
-                    e.export(f"{self.tmpDir}/{newStep.id}.dot")
+                    if self._exportDiagrams:
+                        e = GraphvizExporter(newStep.diagram)
+                        newStep.serialize(f"{self.tmpDir}/config_{newStep.id}.yaml")
+                        e.export(f"{self.tmpDir}/{newStep.id}.dot")
         LOG.debug(f"Explored {len(newSteps)} new steps")
         step.explored = True
         return newSteps
@@ -139,10 +141,11 @@ class DiagramOptimizer:
         diagram = deepcopy(diagramSrc)
         rootStep = OptimizeStepRoot(diagram)
         self._steps = [rootStep]
-        e = GraphvizExporter(diagram)
-        with open(f"{self.tmpDir}/root.yaml", 'w') as f:
-            f.write(diagram.serializeYaml())
-        e.export(f"{self.tmpDir}/root.dot")
+        if self._exportDiagrams:
+            e = GraphvizExporter(diagram)
+            with open(f"{self.tmpDir}/root.yaml", 'w') as f:
+                f.write(diagram.serializeYaml())
+            e.export(f"{self.tmpDir}/root.dot")
 
         for i in range(0, maxDepth):
             self._optimizeIteration()
