@@ -1,5 +1,7 @@
 # BDSolver
 
+[![tests](https://github.com/Dalachowsky/bdsolver/actions/workflows/python-package.yml/badge.svg)](https://github.com/Dalachowsky/bdsolver/actions/workflows/python-package.yml)
+
 This is a solver for block diagram algebrae. Currently its main
 function is to simplify given block diagrams.
 
